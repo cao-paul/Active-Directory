@@ -20,8 +20,8 @@ $ns = Resolve-DnsName -Name $domain
 $dcdomain = Get-ADDomainController -DomainName $domain -Discover
 $dc = Invoke-Command -ComputerName $domaindc.HostName -ScriptBlock{Get-ADDomainController -Filter *}
 
-Write-Host "***** Domaine AD *****"
-Write-Host `t "Domaine :" $domain `n
+Write-Host "***** Domain AD *****"
+Write-Host `t "Domain :" $domain `n
 Write-Host `t "Number of DC :" $dcroot.count
 Write-Host `t "Sample DC :" ($dcroot | random).HostName
 
