@@ -18,7 +18,6 @@ Write-Host `t "IPv4 :" $ipoff `n
 
 $ns = Resolve-DnsName -Name $domain
 $dcdomain = Get-ADDomainController -DomainName $domain -Discover
-$domainname = Get-ADDomain -Identity $domain
 $dc = Invoke-Command -ComputerName $domaindc.HostName -ScriptBlock{Get-ADDomainController -Filter *}
 
 Write-Host "***** Domaine AD *****"
