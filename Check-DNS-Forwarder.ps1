@@ -16,25 +16,16 @@ Write-Host "***** Checking DNS forwarders of child domains *****"
 foreach ($zone in ($childdomain | select ChildZoneName -Unique).ChildZoneName){
 	Write-Host `t "Child domain :" $zone -Foreground Yellow
 	$dcchild = Get-ADDomainController -Filter * -Server $zone -ErrorAction Ignore
-	$dcdown = @()
-	$dcup = @()
-	foreach ($dcsrv in $dcchild){
-		if (Get-ADComputer -Identity $dcsrv.Name -Properties * -Server $dcsrv.Domain | ? {$_.MemberOf -like "*ADAAD_DSC_DC_EXCLUDE_GU*"}){
-			$dcdown += $dcsrv
-			}else{
-			$dcup += $dcsrv
-			}
-		}
-	Write-Host `t "DC du domaine :" $dcup.count `n
+	Write-Host `t "Domain DC :" $dcchild.count `n
 	
-	foreach ($upsrv in $dcup){
-		Write-Host `t $upsrv.Name -Foreground Yellow
-		$nsupsrv = Get-DnsServerForwarder -ComputerName $upsrv.Name
-		$nscheck = $nsupsrv.IPAddress.IPAddressToString | ? {$_ -notin $nsroot}
+	foreach ($srv in $dcchild){
+		Write-Host `t $srv.Name -Foreground Yellow
+		$nssrv = Get-DnsServerForwarder -ComputerName $srv.Name
+		$nscheck = $nssrv.IPAddress.IPAddressToString | ? {$_ -notin $nsroot}
 		if (!$nscheck){
-			Write-Host `t "DNS Forwarder conforme"
+			Write-Host `t "DNS Forwarder compliant"
 			}else{
-			Write-Host `t "DNS Forwader non conforme :"
+			Write-Host `t "DNS Forwader no compliant:"
 			$nscheck
 			}
 		}
