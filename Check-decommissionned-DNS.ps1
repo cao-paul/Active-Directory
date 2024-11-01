@@ -7,16 +7,14 @@ param(
 
 Write-Host "***** Decommissioned server *****"
 if ($serveroff){
-	Write-Host `t "Server :" $serveroff
+	Write-Host `t "Serverdown :" $serveroff
 	$ip = Resolve-DnsName $serveroff -Type A -ErrorAction Ignore -WarningAction SilentlyContinue
 	$ipoff = $ip.IPAddress
 	if (!$ip){
-		Write-Host `t "Unable to resolve DNS :" $serveroff	-ForegroundColor Red
+		Write-Host `t "Résolution DNS impossible :" $serveroff	-ForegroundColor Red
 		}
 	}
-if ($ipoff){
-	Write-Host `t "IPv4 :" $ipoff `n
-	}
+Write-Host `t "IPv4 :" $ipoff `n
 
 $ns = Resolve-DnsName -Name $domain
 $dcdomain = Get-ADDomainController -DomainName $domain -Discover
