@@ -14,9 +14,9 @@ Write-Host `n
 Write-Host "***** Checking DNS forwarders of child domains *****"
 
 foreach ($zone in ($childdomain | select ChildZoneName -Unique).ChildZoneName){
-	Write-Host `t "Child domain :" $zone -Foreground Yellow
 	$dcchild = Get-ADDomainController -Filter * -Server $zone -ErrorAction Ignore
-	Write-Host `t "Domain DC :" $dcchild.count `n
+	Write-Host `t "Child domain :" $zone -Foreground Yellow
+	Write-Host `t "Number of DC :" $dcchild.count `n
 	
 	foreach ($srv in $dcchild){
 		Write-Host `t $srv.Name -Foreground Yellow
